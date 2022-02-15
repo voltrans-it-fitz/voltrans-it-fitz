@@ -1,0 +1,4 @@
+#Tue Feb 15 14:25:35 ICT 2022
+base.0=E\:\\MyWorkspace\\todo-app\\todo_app_fitz\\build\\app\\intermediates\\dex\\debug\\mergeDexDebug\\classes.dex
+renamed.0=classes.dex
+path.0=classes.dex
