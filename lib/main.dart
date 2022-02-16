@@ -1,42 +1,26 @@
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
-import 'package:todo_app_fitz/models.dart';
+import 'package:todo_app_fitz/todo.dart';
 
 void main() {
-  runApp(
-    MultiProvider(
-      providers: [],
-      child: const MyApp(),
-    ),
-  );
+  runApp(const FitzTodoApp());
 }
 
-class MyApp extends StatelessWidget {
-  const MyApp({Key? key}) : super(key: key);
+class FitzTodoApp extends StatelessWidget {
+  const FitzTodoApp({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      title: 'Flutter Demo',
+      title: 'Fitz Todo App',
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
       home: Scaffold(
+        appBar: AppBar(title: const Text('Fitz Todo App')),
         body: SafeArea(
           child: ListView(
-            children: [
-              ListTile(
-                title: Text(mockTodos[0].title),
-                trailing: Checkbox(
-                  value: mockTodos[0].isCompleted,
-                  onChanged: (newValue) {
-                    // TODO:
-                  },
-                ),
-                subtitle: Text(mockTodos[0].date.toString()),
-              ),
-            ],
+            children: mockTodos.map((e) => TodoTile(e)).toList(),
           ),
         ),
         floatingActionButton: FloatingActionButton(
@@ -44,6 +28,25 @@ class MyApp extends StatelessWidget {
           child: const Icon(Icons.add),
         ),
       ),
+    );
+  }
+}
+
+class TodoTile extends StatelessWidget {
+  const TodoTile(
+    this.todo, {
+    Key? key,
+  }) : super(key: key);
+  final Todo todo;
+  @override
+  Widget build(BuildContext context) {
+    return ListTile(
+      title: Text(todo.title),
+      trailing: Checkbox(
+        value: todo.isCompleted,
+        onChanged: (newValue) {},
+      ),
+      subtitle: Text(todo.formattedDate),
     );
   }
 }
