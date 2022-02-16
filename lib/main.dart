@@ -5,11 +5,7 @@ import 'package:todo_app_fitz/models.dart';
 void main() {
   runApp(
     MultiProvider(
-      providers: [
-        ChangeNotifierProvider<IndexChangeNotifier>(
-          create: (context) => IndexChangeNotifier(0),
-        ),
-      ],
+      providers: [],
       child: const MyApp(),
     ),
   );
@@ -21,6 +17,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      debugShowCheckedModeBanner: false,
       title: 'Flutter Demo',
       theme: ThemeData(
         primarySwatch: Colors.blue,
@@ -30,31 +27,23 @@ class MyApp extends StatelessWidget {
           child: ListView(
             children: [
               ListTile(
-                title: Text(mockTodo.title),
+                title: Text(mockTodos[0].title),
                 trailing: Checkbox(
-                  value: mockTodo.isCompleted,
+                  value: mockTodos[0].isCompleted,
                   onChanged: (newValue) {
                     // TODO:
                   },
                 ),
-                subtitle: Text(mockTodo.date.toString()),
+                subtitle: Text(mockTodos[0].date.toString()),
               ),
             ],
           ),
         ),
         floatingActionButton: FloatingActionButton(
-          onPressed: () {
-            context.read<IndexChangeNotifier>().increment();
-          },
+          onPressed: () {},
           child: const Icon(Icons.add),
         ),
       ),
     );
   }
 }
-
-final mockTodo = Todo(
-  id: 'Todo Id',
-  title: 'Learn Provider',
-  date: DateTime.now(),
-);

@@ -1,6 +1,3 @@
-import 'package:flutter/foundation.dart';
-import 'package:flutter/material.dart';
-
 class Todo {
   final String id;
   final String title;
@@ -15,20 +12,8 @@ class Todo {
   });
 }
 
-class IndexChangeNotifier with ChangeNotifier {
-  int _index = 0;
-  int get index => _index;
-  IndexChangeNotifier(this._index);
-  void increment() {
-    _index++;
-
-    notifyListeners();
-  }
-}
-
-class StringModel {
-  final String _title;
-
-  StringModel(this._title);
-  String get title => _title;
-}
+final mockTodos = [
+  Todo(id: 'Todo Id', title: 'Learn Provider', date: DateTime.now()),
+  Todo(id: 'Todo Id', title: 'Writing Todo App', date: DateTime(1, 10, 2022)),
+  Todo(id: 'Todo Id', title: 'Testing', date: DateTime(7, 2, 2022)),
+];
