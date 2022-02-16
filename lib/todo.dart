@@ -6,7 +6,7 @@ class Todo {
   final bool isCompleted;
   final DateTime date;
 
-  String get formattedDate => DateFormat('dd-MMM-yyyy').format(date);
+  String get formattedDate => DateFormat('dd MMMM yyyy').format(date);
 
   const Todo({
     this.isCompleted = false,
@@ -14,6 +14,11 @@ class Todo {
     required this.title,
     required this.date,
   });
+
+  @override
+  String toString() {
+    return 'Todo(id: $id, title: $title, isCompleted: $isCompleted, date: $date)';
+  }
 }
 
 final mockTodos = [
