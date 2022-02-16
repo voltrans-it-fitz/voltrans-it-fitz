@@ -1,43 +1,36 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:todo_app_fitz/todo_manager.dart';
 
-import 'todo.dart';
+class TodoTile extends StatelessWidget {
+  const TodoTile(this.index, {Key? key}) : super(key: key);
 
-class TodoTile extends StatefulWidget {
-  const TodoTile(
-    this.todo, {
-    required this.onSwipe,
-    Key? key,
-  }) : super(key: key);
-  final Todo todo;
-  final Function(dynamic) onSwipe;
-  @override
-  State<TodoTile> createState() => _TodoTileState();
-}
+  final int index;
 
-class _TodoTileState extends State<TodoTile> {
-  bool isCompleted = false;
   @override
   Widget build(BuildContext context) {
+    final todo = Provider.of<TodoManager>(context).todos[index];
+    var lineThrough = TextStyle(
+      decoration: todo.isCompleted ? TextDecoration.lineThrough : null,
+    );
     return Dismissible(
       background: Container(color: Colors.red),
-      onDismissed: widget.onSwipe,
+      onDismissed: (_) =>
+          Provider.of<TodoManager>(context, listen: false).deleteTodo(index),
       direction: DismissDirection.endToStart,
-      key: GlobalKey(),
+      key: UniqueKey(), // key distinguishes it from the other items
       child: Card(
+        margin: EdgeInsets.zero,
         child: ListTile(
-          title: Text(
-            widget.todo.title,
-            style: TextStyle(
-              decoration: isCompleted ? TextDecoration.lineThrough : null,
-            ),
-          ),
+          title: Text(todo.title, style: lineThrough),
           trailing: Checkbox(
-            value: isCompleted,
-            onChanged: (newValue) {
-              setState(() => isCompleted = newValue ?? false);
+            value: todo.isCompleted,
+            onChanged: (v) {
+              Provider.of<TodoManager>(context, listen: false)
+                  .toggleTodo(index);
             },
           ),
-          subtitle: Text(widget.todo.formattedDate),
+          subtitle: Text(todo.formattedDate, style: lineThrough),
         ),
       ),
     );

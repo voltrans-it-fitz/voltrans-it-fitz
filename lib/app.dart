@@ -1,72 +1,62 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
-import 'package:todo_app_fitz/todo.dart';
+import 'package:provider/provider.dart';
+import 'package:todo_app_fitz/todo_manager.dart';
 import 'package:todo_app_fitz/todo_tile.dart';
 
 import 'add_todo.dart';
+import 'config.dart';
 
-class App extends StatefulWidget {
+class App extends StatelessWidget {
   const App({
     Key? key,
   }) : super(key: key);
-
-  @override
-  State<App> createState() => _AppState();
-}
-
-class _AppState extends State<App> {
-  // Simulate get the todos from service
-  List<Todo> todos = [...mockTodos];
   @override
   Widget build(BuildContext context) {
+    final _todoManager = Provider.of<TodoManager>(context);
     return Container(
       color: ThemeData().primaryColor,
       child: SafeArea(
         child: Scaffold(
           backgroundColor: Colors.white,
-          appBar: AppBar(
-            elevation: 0,
-            systemOverlayStyle: SystemUiOverlayStyle.light,
-            backgroundColor: Colors.transparent,
-            toolbarHeight: MediaQuery.of(context).size.height * 0.15,
-            flexibleSpace: Container(
-              padding: const EdgeInsets.all(8.0),
-              child: Card(
-                elevation: 0,
-                child: ListTile(
-                  title: Text(
-                    'My Todos',
-                    style: Theme.of(context).textTheme.headline3!.copyWith(
-                          fontWeight: FontWeight.w500,
-                          color: Colors.black,
-                        ),
+          appBar: MyTodoAppBar(
+            heading: Text(
+              'My Todos',
+              style: Theme.of(context).textTheme.headline3,
+            ),
+            toolbarHeight:
+                MediaQuery.of(context).size.height * SizeConfig.appBarRatio,
+            popupMenuButton: PopupMenuButton(
+              itemBuilder: (context) {
+                return [
+                  const PopupMenuItem<String>(
+                    value: '',
+                    child: Text('Show only completed'),
                   ),
-                  subtitle: const Padding(
-                    padding: EdgeInsets.only(top: 8.0),
-                    child: Text('3 out of 5'),
-                  ),
-                ),
+                ];
+              },
+            ),
+            subtitle: Padding(
+              padding: const EdgeInsets.only(top: SizeConfig.defaultPadding),
+              child: Text(
+                '${_todoManager.completedTodoCount} out of ${_todoManager.todosLength}',
               ),
             ),
           ),
-          body: ListView.builder(
-            padding: const EdgeInsets.all(8.0),
-            shrinkWrap: true,
-            itemCount: todos.length,
-            itemBuilder: (context, index) => TodoTile(
-              todos[index],
-              onSwipe: (_) => setState(() => todos.removeAt(index)),
+          body: ListView.separated(
+            separatorBuilder: (_, __) => const SizedBox(
+              height: SizeConfig.defaultPadding * 0.5,
             ),
+            padding: const EdgeInsets.all(SizeConfig.defaultPadding),
+            shrinkWrap: true,
+            itemCount: _todoManager.todos.length,
+            itemBuilder: (context, index) => TodoTile(index),
           ),
           floatingActionButton: FloatingActionButton(
             onPressed: () async {
-              final Todo todo = await Navigator.push(
+              Navigator.push(
                 context,
                 MaterialPageRoute(builder: (context) => const AddTodoPage()),
               );
-              setState(() {
-                todos.add(todo);
-              });
             },
             child: const Icon(Icons.add),
           ),
@@ -75,3 +65,42 @@ class _AppState extends State<App> {
     );
   }
 }
+
+class MyTodoAppBar extends AppBar {
+  // ignore: annotate_overrides, overridden_fields
+  final double toolbarHeight;
+  final Widget heading;
+  final Widget subtitle;
+  final Widget? popupMenuButton;
+
+  MyTodoAppBar({
+    Key? key,
+    required this.toolbarHeight,
+    required this.heading,
+    required this.subtitle,
+    this.popupMenuButton = const SizedBox.shrink(),
+  }) : super(
+          automaticallyImplyLeading: false,
+          key: key,
+          toolbarHeight: toolbarHeight,
+          flexibleSpace: Container(
+            padding: const EdgeInsets.only(
+              left: SizeConfig.defaultPadding * 3,
+              top: SizeConfig.defaultPadding * 3,
+              right: SizeConfig.defaultPadding,
+            ),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    heading,
+                    popupMenuButton ?? const SizedBox.shrink(),
+                  ],
+                ),
+                subtitle,
+              ],
+            ),
+          ),
+        );
