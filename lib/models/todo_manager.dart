@@ -4,10 +4,10 @@ import 'package:flutter/cupertino.dart';
 
 import 'todo.dart';
 
-class TodoManager extends ChangeNotifier {
+class TodoManager with ChangeNotifier {
   final List<Todo> _todos;
 
-  get todos => UnmodifiableListView(_todos);
+  UnmodifiableListView get todos => UnmodifiableListView(_todos);
 
   get completedTodoCount => _todos.where((e) => e.isCompleted).toList().length;
 
@@ -15,13 +15,14 @@ class TodoManager extends ChangeNotifier {
 
   TodoManager({required List<Todo> todos}) : _todos = todos;
 
-  toggleTodo(int index) {
+  toggleTodo({required String id}) {
+    var index = _todos.indexWhere((element) => element.id == id);
     _todos[index].isCompleted = !_todos[index].isCompleted;
     notifyListeners();
   }
 
-  deleteTodo(int index) {
-    _todos.removeAt(index);
+  deleteTodo(String id) {
+    _todos.removeWhere((todo) => todo.id == id);
     notifyListeners();
   }
 

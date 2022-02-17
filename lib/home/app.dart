@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import '../todo_tile.dart';
 
+import '../config/config.dart';
 import '../models/models.dart';
 import '../todo_detail/todo_detail_page.dart';
-import '../config/config.dart';
 import 'my_todo_app_bar.dart';
+import 'todo_tile.dart';
 
 class App extends StatelessWidget {
   const App({
@@ -13,7 +13,7 @@ class App extends StatelessWidget {
   }) : super(key: key);
   @override
   Widget build(BuildContext context) {
-    final _todoManager = Provider.of<TodoManager>(context);
+    debugPrint('App rebuild');
     return Container(
       color: ThemeData().primaryColor,
       child: SafeArea(
@@ -36,26 +36,12 @@ class App extends StatelessWidget {
                 ];
               },
             ),
-            subtitle: Padding(
-              padding: const EdgeInsets.only(top: SizeConfig.defaultPadding),
-              child: Text(
-                '${_todoManager.completedTodoCount} out of ${_todoManager.todosLength}',
-              ),
-            ),
+            subtitle: const CountingTitle(),
           ),
           body: SingleChildScrollView(
             child: Column(
               children: [
-                ListView.separated(
-                  physics: const NeverScrollableScrollPhysics(),
-                  separatorBuilder: (_, __) => const SizedBox(
-                    height: SizeConfig.defaultPadding * 0.5,
-                  ),
-                  padding: const EdgeInsets.all(SizeConfig.defaultPadding),
-                  shrinkWrap: true,
-                  itemCount: _todoManager.todos.length,
-                  itemBuilder: (context, index) => TodoTile(index),
-                ),
+                const TodoList(),
                 Divider(
                   thickness: 1.5,
                   indent: MediaQuery.of(context).size.width * 0.4,
@@ -76,6 +62,45 @@ class App extends StatelessWidget {
           ),
         ),
       ),
+    );
+  }
+}
+
+class TodoList extends StatelessWidget {
+  const TodoList({
+    Key? key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Consumer<TodoManager>(builder: (context, value, child) {
+      debugPrint('Todo List rebuild');
+      return ListView.separated(
+        physics: const NeverScrollableScrollPhysics(),
+        separatorBuilder: (_, __) => const SizedBox(
+          height: SizeConfig.defaultPadding * 0.5,
+        ),
+        padding: const EdgeInsets.all(SizeConfig.defaultPadding),
+        shrinkWrap: true,
+        itemCount: value.todos.length,
+        itemBuilder: (context, index) => TodoTile(value.todos[index]),
+      );
+    });
+  }
+}
+
+class CountingTitle extends StatelessWidget {
+  const CountingTitle({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Consumer<TodoManager>(
+      builder: (_, manager, __) {
+        debugPrint('Counting title rebuild');
+        return Text(
+          '${manager.completedTodoCount} out of ${manager.todosLength}',
+        );
+      },
     );
   }
 }

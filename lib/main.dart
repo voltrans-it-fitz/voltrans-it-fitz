@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
+import 'todo_detail/todo_detail_page.dart';
 
 import 'config/config.dart';
-import 'home/app.dart';
 import 'models/models.dart';
 
 void main() {
@@ -29,7 +29,7 @@ class FitzTodoApp extends StatelessWidget {
         appBarTheme: _appBarTheme,
         textTheme: const TextTheme(headline3: _h3Theme),
       ),
-      home: const App(),
+      home: const TodoDetailPage(),
     );
   }
 }
@@ -46,9 +46,7 @@ const _h3Theme = TextStyle(
 );
 const _inputDecorationTheme = InputDecorationTheme(
   floatingLabelBehavior: FloatingLabelBehavior.always,
-  labelStyle: TextStyle(
-    color: AppColor.borderColor,
-  ),
+  labelStyle: TextStyle(color: AppColor.borderColor),
   disabledBorder: _inputBorder,
   enabledBorder: _inputBorder,
   focusedBorder: _inputBorder,
