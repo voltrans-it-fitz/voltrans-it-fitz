@@ -43,14 +43,27 @@ class App extends StatelessWidget {
               ),
             ),
           ),
-          body: ListView.separated(
-            separatorBuilder: (_, __) => const SizedBox(
-              height: SizeConfig.defaultPadding * 0.5,
+          body: SingleChildScrollView(
+            child: Column(
+              children: [
+                ListView.separated(
+                  physics: const NeverScrollableScrollPhysics(),
+                  separatorBuilder: (_, __) => const SizedBox(
+                    height: SizeConfig.defaultPadding * 0.5,
+                  ),
+                  padding: const EdgeInsets.all(SizeConfig.defaultPadding),
+                  shrinkWrap: true,
+                  itemCount: _todoManager.todos.length,
+                  itemBuilder: (context, index) => TodoTile(index),
+                ),
+                Divider(
+                  thickness: 1.5,
+                  indent: MediaQuery.of(context).size.width * 0.4,
+                  endIndent: MediaQuery.of(context).size.width * 0.4,
+                ),
+                SizedBox(height: MediaQuery.of(context).size.height * 0.1),
+              ],
             ),
-            padding: const EdgeInsets.all(SizeConfig.defaultPadding),
-            shrinkWrap: true,
-            itemCount: _todoManager.todos.length,
-            itemBuilder: (context, index) => TodoTile(index),
           ),
           floatingActionButton: FloatingActionButton(
             onPressed: () async {
