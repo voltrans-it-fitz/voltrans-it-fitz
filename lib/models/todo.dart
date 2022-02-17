@@ -1,7 +1,8 @@
 import 'package:intl/intl.dart';
+import 'package:uuid/uuid.dart';
 
 class Todo {
-  final String id;
+  final String _id;
   final String title;
   bool isCompleted;
   final DateTime date;
@@ -9,15 +10,15 @@ class Todo {
   String get formattedDate => DateFormat('dd MMMM yyyy').format(date);
 
   Todo({
+    String? id,
     this.isCompleted = false,
-    required this.id,
     required this.title,
     required this.date,
-  });
+  }) : _id = id == null ? const Uuid().v1() : '';
 
   @override
   String toString() {
-    return 'Todo(id: $id, title: $title, isCompleted: $isCompleted, date: $date)';
+    return 'Todo(id: $_id, title: $title, isCompleted: $isCompleted, date: $date)';
   }
 }
 

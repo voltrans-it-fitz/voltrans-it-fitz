@@ -76,11 +76,7 @@ class _TodoFormState extends State<TodoForm> {
                 if (_formKey.currentState!.validate()) {
                   _formKey.currentState!.save();
                   todoManager.addTodo(
-                    Todo(
-                      title: _titleController.text,
-                      id: _titleController.text,
-                      date: date,
-                    ),
+                    Todo(title: _titleController.text, date: date),
                   );
                   Navigator.pop(context);
                 } else {}
