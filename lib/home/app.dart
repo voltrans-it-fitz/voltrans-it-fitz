@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:todo_app_fitz/todo_manager.dart';
-import 'package:todo_app_fitz/todo_tile.dart';
+import '../todo_tile.dart';
 
-import 'add_todo.dart';
-import 'config.dart';
+import '../models/models.dart';
+import '../todo_detail/todo_detail_page.dart';
+import '../config/config.dart';
+import 'my_todo_app_bar.dart';
 
 class App extends StatelessWidget {
   const App({
@@ -55,7 +56,7 @@ class App extends StatelessWidget {
             onPressed: () async {
               Navigator.push(
                 context,
-                MaterialPageRoute(builder: (context) => const AddTodoPage()),
+                MaterialPageRoute(builder: (context) => const TodoDetailPage()),
               );
             },
             child: const Icon(Icons.add),
@@ -65,42 +66,3 @@ class App extends StatelessWidget {
     );
   }
 }
-
-class MyTodoAppBar extends AppBar {
-  // ignore: annotate_overrides, overridden_fields
-  final double toolbarHeight;
-  final Widget heading;
-  final Widget subtitle;
-  final Widget? popupMenuButton;
-
-  MyTodoAppBar({
-    Key? key,
-    required this.toolbarHeight,
-    required this.heading,
-    required this.subtitle,
-    this.popupMenuButton = const SizedBox.shrink(),
-  }) : super(
-          automaticallyImplyLeading: false,
-          key: key,
-          toolbarHeight: toolbarHeight,
-          flexibleSpace: Container(
-            padding: const EdgeInsets.only(
-              left: SizeConfig.defaultPadding * 3,
-              top: SizeConfig.defaultPadding * 3,
-              right: SizeConfig.defaultPadding,
-            ),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    heading,
-                    popupMenuButton ?? const SizedBox.shrink(),
-                  ],
-                ),
-                subtitle,
-              ],
-            ),
-          ),
-        );

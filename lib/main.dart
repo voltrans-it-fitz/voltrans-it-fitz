@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
-import 'package:todo_app_fitz/todo.dart';
-import 'package:todo_app_fitz/todo_manager.dart';
 
-import 'app.dart';
+import 'config/config.dart';
+import 'home/app.dart';
+import 'models/models.dart';
 
 void main() {
   runApp(
@@ -25,6 +25,7 @@ class FitzTodoApp extends StatelessWidget {
       title: 'Fitz Todo App',
       theme: ThemeData(
         primarySwatch: Colors.blue,
+        inputDecorationTheme: _inputDecorationTheme,
         appBarTheme: _appBarTheme,
         textTheme: const TextTheme(headline3: _h3Theme),
       ),
@@ -34,7 +35,6 @@ class FitzTodoApp extends StatelessWidget {
 }
 
 const _appBarTheme = AppBarTheme(
-
   actionsIconTheme: IconThemeData(color: Colors.black),
   elevation: 0,
   systemOverlayStyle: SystemUiOverlayStyle.light,
@@ -43,4 +43,20 @@ const _appBarTheme = AppBarTheme(
 const _h3Theme = TextStyle(
   fontWeight: FontWeight.w500,
   color: Colors.black,
+);
+const _inputDecorationTheme = InputDecorationTheme(
+  floatingLabelBehavior: FloatingLabelBehavior.always,
+  labelStyle: TextStyle(
+    color: AppColor.borderColor,
+  ),
+  disabledBorder: _inputBorder,
+  enabledBorder: _inputBorder,
+  focusedBorder: _inputBorder,
+  focusColor: AppColor.borderColor,
+  border: _inputBorder,
+  focusedErrorBorder: _inputBorder,
+  errorBorder: _inputBorder,
+);
+const _inputBorder = UnderlineInputBorder(
+  borderSide: BorderSide(color: AppColor.borderColor),
 );
