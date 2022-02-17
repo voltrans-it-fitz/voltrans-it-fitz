@@ -15,13 +15,19 @@ class TodoManager extends ChangeNotifier {
 
   TodoManager({required List<Todo> todos}) : _todos = todos;
 
-  toggleTodo(index) {
+  toggleTodo(int index) {
     _todos[index].isCompleted = !_todos[index].isCompleted;
     notifyListeners();
   }
 
-  deleteTodo(index) {
+  deleteTodo(int index) {
     _todos.removeAt(index);
+    notifyListeners();
+  }
+
+  updateTodo(String id, Todo todo) {
+    var index = _todos.indexWhere((element) => element.id == id);
+    _todos[index] = todo;
     notifyListeners();
   }
 

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:todo_app_fitz/todo_detail/todo_detail_page.dart';
 
 import 'models/models.dart';
 
@@ -25,7 +26,10 @@ class TodoTile extends StatelessWidget {
       key: UniqueKey(), // key distinguishes it from the other items
       child: InkWell(
         onTap: () {
-          // TODO: Update todo
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (_) => TodoDetailPage(todo: todo)),
+          );
         },
         child: Card(
           margin: EdgeInsets.zero,

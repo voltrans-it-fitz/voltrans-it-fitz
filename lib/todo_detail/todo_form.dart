@@ -5,8 +5,8 @@ import '../config/config.dart';
 import '../models/models.dart';
 
 class TodoForm extends StatefulWidget {
-  const TodoForm({Key? key}) : super(key: key);
-
+  const TodoForm(this.todo, {Key? key}) : super(key: key);
+  final Todo? todo;
   @override
   State<TodoForm> createState() => _TodoFormState();
 }
@@ -16,11 +16,13 @@ class _TodoFormState extends State<TodoForm> {
 
   final _titleController = TextEditingController();
   final _dateController = TextEditingController();
-  DateTime date = DateTime.now();
+  late DateTime date;
 
   @override
   void initState() {
+    date = widget.todo?.date ?? DateTime.now();
     _dateController.text = date.ddMMYYYY();
+    _titleController.text = widget.todo?.title ?? '';
     super.initState();
   }
 
@@ -75,9 +77,15 @@ class _TodoFormState extends State<TodoForm> {
               onPressed: () {
                 if (_formKey.currentState!.validate()) {
                   _formKey.currentState!.save();
-                  todoManager.addTodo(
-                    Todo(title: _titleController.text, date: date),
-                  );
+                  var todo = Todo(title: _titleController.text, date: date);
+                  var isEditting = widget.todo != null;
+
+                  if (isEditting) {
+                    todoManager.updateTodo(widget.todo!.id, todo);
+                  } else {
+                    todoManager.addTodo(todo);
+                  }
+
                   Navigator.pop(context);
                 } else {}
               },

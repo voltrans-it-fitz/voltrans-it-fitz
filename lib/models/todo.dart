@@ -7,6 +7,7 @@ class Todo {
   bool isCompleted;
   final DateTime date;
 
+  String get id => _id;
   String get formattedDate => DateFormat('dd MMMM yyyy').format(date);
 
   Todo({
@@ -23,16 +24,9 @@ class Todo {
 }
 
 final mockTodos = [
-  Todo(id: 'Todo Id', title: 'Learn Provider', date: DateTime.now()),
-  Todo(id: 'Todo Id', title: 'Writing Todo App', date: DateTime(2022, 1, 10)),
-  Todo(id: 'Todo Id', title: 'Testing', date: DateTime(2022, 7, 2)),
-  Todo(id: 'Todo Id', title: 'Learn Provider', date: DateTime.now()),
-  Todo(id: 'Todo Id', title: 'Writing Todo App', date: DateTime(2022, 1, 10)),
-  Todo(id: 'Todo Id', title: 'Testing', date: DateTime(2022, 7, 2)),
-  Todo(id: 'Todo Id', title: 'Learn Provider', date: DateTime.now()),
-  Todo(id: 'Todo Id', title: 'Writing Todo App', date: DateTime(2022, 1, 10)),
-  Todo(id: 'Todo Id', title: 'Testing', date: DateTime(2022, 7, 2)),
-  Todo(id: 'Todo Id', title: 'Learn Provider', date: DateTime.now()),
-  Todo(id: 'Todo Id', title: 'Writing Todo App', date: DateTime(2022, 1, 10)),
-  Todo(id: 'Todo Id', title: 'Testing', date: DateTime(2022, 7, 2)),
+  Todo(title: 'Learn Provider', date: DateTime.now()),
+  Todo(title: 'Writing Todo App', date: DateTime(2022, 1, 10)),
+  Todo(title: 'Testing', date: DateTime(2022, 7, 2)),
+  Todo(title: 'Learn Provider', date: DateTime.now()),
+  Todo(title: 'Writing Todo App', date: DateTime(2022, 1, 10)),
 ];

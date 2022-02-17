@@ -2,10 +2,12 @@ import 'package:flutter/material.dart';
 
 import '../config/config.dart';
 import '../home/my_todo_app_bar.dart';
+import '../models/models.dart';
 import 'todo_form.dart';
 
 class TodoDetailPage extends StatelessWidget {
-  const TodoDetailPage({Key? key}) : super(key: key);
+  const TodoDetailPage({Key? key, this.todo}) : super(key: key);
+  final Todo? todo;
 
   @override
   Widget build(BuildContext context) {
@@ -30,9 +32,9 @@ class TodoDetailPage extends StatelessWidget {
               style: Theme.of(context).textTheme.headline3,
             ),
           ),
-          body: const Padding(
-            padding: EdgeInsets.all(SizeConfig.defaultPadding * 3),
-            child: TodoForm(),
+          body: Padding(
+            padding: const EdgeInsets.all(SizeConfig.defaultPadding * 3),
+            child: TodoForm(todo),
           ),
         ),
       ),
