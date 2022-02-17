@@ -1,17 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:todo_app_fitz/todo_detail/todo_detail_page.dart';
 
-import 'models/models.dart';
+import '../models/models.dart';
+import '../todo_detail/todo_detail_page.dart';
 
 class TodoTile extends StatelessWidget {
-  const TodoTile(this.index, {Key? key}) : super(key: key);
+  const TodoTile(this.todo, {Key? key}) : super(key: key);
 
-  final int index;
+  final Todo todo;
 
   @override
   Widget build(BuildContext context) {
-    final todo = Provider.of<TodoManager>(context).todos[index];
     var lineThrough = TextStyle(
       decoration: todo.isCompleted ? TextDecoration.lineThrough : null,
     );
@@ -21,7 +20,7 @@ class TodoTile extends StatelessWidget {
       onDismissed: (_) => Provider.of<TodoManager>(
         context,
         listen: false,
-      ).deleteTodo(index),
+      ).deleteTodo(todo.id),
       direction: DismissDirection.endToStart,
       key: UniqueKey(), // key distinguishes it from the other items
       child: InkWell(
@@ -44,7 +43,7 @@ class TodoTile extends StatelessWidget {
               value: todo.isCompleted,
               onChanged: (v) {
                 Provider.of<TodoManager>(context, listen: false)
-                    .toggleTodo(index);
+                    .toggleTodo(id: todo.id);
               },
             ),
             subtitle: Text(todo.formattedDate, style: lineThrough),

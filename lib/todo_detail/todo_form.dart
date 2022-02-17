@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:provider/provider.dart';
 import '../config/config.dart';
 
@@ -39,6 +40,7 @@ class _TodoFormState extends State<TodoForm> {
             maxLength: 150,
             decoration: const InputDecoration(
               label: Text('Title'),
+              hintText: 'Your Todo Title',
             ),
           ),
           const SizedBox(height: SizeConfig.defaultPadding * 2),
@@ -52,9 +54,11 @@ class _TodoFormState extends State<TodoForm> {
                   decoration: const InputDecoration(label: Text('Date')),
                 ),
               ),
-              TextButton(
-                child: const Text('sDP'),
-                // icon: const Icon(Icons.calendar_month),
+              IconButton(
+                icon: const FaIcon(
+                  FontAwesomeIcons.calendar,
+                  color: Colors.blue,
+                ),
                 onPressed: () async {
                   final selectedDate = await showDatePicker(
                     context: context,
@@ -89,9 +93,12 @@ class _TodoFormState extends State<TodoForm> {
                   Navigator.pop(context);
                 } else {}
               },
-              child: const Padding(
-                padding: EdgeInsets.all(SizeConfig.defaultPadding * 2),
-                child: Text('Add', style: TextStyle(fontSize: 16)),
+              child: Padding(
+                padding: const EdgeInsets.all(SizeConfig.defaultPadding * 2),
+                child: Text(
+                  (widget.todo == null) ? 'Add' : 'Update',
+                  style: const TextStyle(fontSize: 16),
+                ),
               ),
               style: ButtonStyle(
                 shape: MaterialStateProperty.all(
