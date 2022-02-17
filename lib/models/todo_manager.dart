@@ -1,7 +1,8 @@
 import 'dart:collection';
 
 import 'package:flutter/cupertino.dart';
-import 'package:todo_app_fitz/todo.dart';
+
+import 'todo.dart';
 
 class TodoManager extends ChangeNotifier {
   final List<Todo> _todos;
