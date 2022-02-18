@@ -49,7 +49,7 @@ class FirebaseTodoRepository with ChangeNotifier implements TodoRepository {
       final todo = Todo.fromDocument(change.doc);
       switch (change.type) {
         case DocumentChangeType.added:
-          _todos.add(Todo.fromDocument(change.doc));
+          _todos.insert(0, Todo.fromDocument(change.doc));
           break;
         case DocumentChangeType.modified:
           var i = _todos.indexWhere((e) => e.id == todo.id);
