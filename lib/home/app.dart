@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:todo_app_fitz/data/todo_repository.dart';
 
 import '../config/config.dart';
-import '../models/models.dart';
 import '../todo_detail/todo_detail_page.dart';
 import 'my_todo_app_bar.dart';
 import 'todo_tile.dart';
@@ -13,7 +13,6 @@ class App extends StatelessWidget {
   }) : super(key: key);
   @override
   Widget build(BuildContext context) {
-    debugPrint('App rebuild');
     return Container(
       color: ThemeData().primaryColor,
       child: SafeArea(
@@ -29,9 +28,11 @@ class App extends StatelessWidget {
             popupMenuButton: PopupMenuButton(
               itemBuilder: (context) {
                 return [
-                  const PopupMenuItem<String>(
+                  PopupMenuItem<String>(
                     value: '',
-                    child: Text('Show only completed'),
+                    child: const Text('Show only completed'),
+                    onTap: () =>
+                        context.read<TodoRepository>().showCompletedTodos(),
                   ),
                 ];
               },
@@ -40,6 +41,7 @@ class App extends StatelessWidget {
           ),
           body: SingleChildScrollView(
             child: Column(
+              mainAxisSize: MainAxisSize.min,
               children: [
                 const TodoList(),
                 Divider(
@@ -73,19 +75,39 @@ class TodoList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Consumer<TodoManager>(builder: (context, value, child) {
-      debugPrint('Todo List rebuild');
-      return ListView.separated(
-        physics: const NeverScrollableScrollPhysics(),
-        separatorBuilder: (_, __) => const SizedBox(
-          height: SizeConfig.defaultPadding * 0.5,
-        ),
-        padding: const EdgeInsets.all(SizeConfig.defaultPadding),
-        shrinkWrap: true,
-        itemCount: value.todos.length,
-        itemBuilder: (context, index) => TodoTile(value.todos[index]),
-      );
-    });
+    return Consumer<TodoRepository>(
+      builder: (_, provider, __) {
+        // if ((provider as FirebaseTodoRepository).isLoading) {
+        //   return Container(
+        //     alignment: Alignment.center,
+        //     width: double.infinity,
+        //     height: MediaQuery.of(context).size.height * 0.725,
+        //     // 1 - appbar height - 0.1
+        //     child: const Center(child: CircularProgressIndicator()),
+        //   );
+        // }
+        if (provider.todoCount != 0) {
+          return ListView.separated(
+            physics: const NeverScrollableScrollPhysics(),
+            separatorBuilder: (_, __) => const SizedBox(
+              height: SizeConfig.defaultPadding * 0.5,
+            ),
+            padding: const EdgeInsets.all(SizeConfig.defaultPadding),
+            shrinkWrap: true,
+            itemCount: provider.todos.length,
+            itemBuilder: (context, index) => TodoTile(provider.todos[index]),
+          );
+        } else {
+          return Container(
+            alignment: Alignment.center,
+            width: double.infinity,
+            height: MediaQuery.of(context).size.height * 0.725,
+            // 1 - appbar height - 0.1
+            child: const Text('You don\'t have any todo. Create one'),
+          );
+        }
+      },
+    );
   }
 }
 
@@ -94,11 +116,10 @@ class CountingTitle extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Consumer<TodoManager>(
-      builder: (_, manager, __) {
-        debugPrint('Counting title rebuild');
+    return Consumer<TodoRepository>(
+      builder: (_, provider, __) {
         return Text(
-          '${manager.completedTodoCount} out of ${manager.todosLength}',
+          '${provider.completedTodoCount} out of ${provider.todoCount}',
         );
       },
     );

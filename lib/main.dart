@@ -1,15 +1,26 @@
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
-import 'todo_detail/todo_detail_page.dart';
+import 'package:todo_app_fitz/data/todo_repository.dart';
+import 'package:todo_app_fitz/services/firestore_services.dart';
+import 'data/firebase_todo_repository.dart';
+import 'home/app.dart';
 
 import 'config/config.dart';
-import 'models/models.dart';
 
-void main() {
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+
+  await Firebase.initializeApp();
+  final provider = FirebaseTodoRepository(FirestoreService());
+  provider.create();
+
   runApp(
-    ChangeNotifierProvider(
-      create: (_) => TodoManager(todos: [...mockTodos]),
+    MultiProvider(
+      providers: [
+        ChangeNotifierProvider<TodoRepository>.value(value: provider),
+      ],
       child: const FitzTodoApp(),
     ),
   );
@@ -29,7 +40,7 @@ class FitzTodoApp extends StatelessWidget {
         appBarTheme: _appBarTheme,
         textTheme: const TextTheme(headline3: _h3Theme),
       ),
-      home: const TodoDetailPage(),
+      home: const App(),
     );
   }
 }
@@ -52,9 +63,12 @@ const _inputDecorationTheme = InputDecorationTheme(
   focusedBorder: _inputBorder,
   focusColor: AppColor.borderColor,
   border: _inputBorder,
-  focusedErrorBorder: _inputBorder,
-  errorBorder: _inputBorder,
+  focusedErrorBorder: _errorBorder,
+  errorBorder: _errorBorder,
 );
 const _inputBorder = UnderlineInputBorder(
   borderSide: BorderSide(color: AppColor.borderColor),
+);
+const _errorBorder = UnderlineInputBorder(
+  borderSide: BorderSide(color: Colors.red),
 );

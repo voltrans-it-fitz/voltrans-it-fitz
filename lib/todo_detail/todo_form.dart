@@ -3,6 +3,7 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:provider/provider.dart';
 import '../config/config.dart';
 
+import '../data/todo_repository.dart';
 import '../models/models.dart';
 
 class TodoForm extends StatefulWidget {
@@ -29,7 +30,7 @@ class _TodoFormState extends State<TodoForm> {
 
   @override
   Widget build(BuildContext context) {
-    final todoManager = context.read<TodoManager>();
+    final todoManager = context.read<TodoRepository>();
     return Form(
       key: _formKey,
       child: Column(
@@ -81,13 +82,20 @@ class _TodoFormState extends State<TodoForm> {
               onPressed: () {
                 if (_formKey.currentState!.validate()) {
                   _formKey.currentState!.save();
-                  var todo = Todo(title: _titleController.text, date: date);
                   var isEditting = widget.todo != null;
-
+                  Todo todo;
                   if (isEditting) {
-                    todoManager.updateTodo(widget.todo!.id, todo);
+                    todo = Todo(
+                      title: _titleController.text,
+                      date: date,
+                    ).copyWith(
+                      id: widget.todo!.id,
+                      isCompleted: widget.todo!.isCompleted,
+                    );
+                    todoManager.update(todo);
                   } else {
-                    todoManager.addTodo(todo);
+                    todo = Todo(title: _titleController.text, date: date);
+                    todoManager.insert(todo);
                   }
 
                   Navigator.pop(context);
