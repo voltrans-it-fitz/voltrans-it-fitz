@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="default_web_client_id" translatable="false">208118052213-m7v520p5piakq7re3o69090ml676n3q7.apps.googleusercontent.com</string>
+    <string name="gcm_defaultSenderId" translatable="false">208118052213</string>
+    <string name="google_api_key" translatable="false">AIzaSyD8psYdepQbGl69hKACC8VVuskt4sBAkog</string>
+    <string name="google_app_id" translatable="false">1:208118052213:android:b69d2c57dd9cf6c17a0f3c</string>
+    <string name="google_crash_reporting_api_key" translatable="false">AIzaSyD8psYdepQbGl69hKACC8VVuskt4sBAkog</string>
+    <string name="google_storage_bucket" translatable="false">fitz-todo-app.appspot.com</string>
+    <string name="project_id" translatable="false">fitz-todo-app</string>
+</resources>
