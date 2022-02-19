@@ -19,10 +19,7 @@ void main() async {
   runApp(
     MultiProvider(
       providers: [
-        ChangeNotifierProvider<TodoRepository>(
-          create: (_) => FirebaseTodoRepository(FirestoreService())..create(),
-        ),
-        //.value(value: provider),
+        ChangeNotifierProvider<TodoRepository>.value(value: provider),
       ],
       child: const FitzTodoApp(),
     ),
